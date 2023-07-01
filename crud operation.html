@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operaion</title>
+
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .container {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        col-sm-6 {
+            float: left;
+            width: 75%;
+            margin-top: 6px;
+        }
+
+        .form-group {
+            margin-block: auto;
+            color: black;
+            padding: 0.5%;
+        }
+
+        table,
+        td,
+        th {
+            border: 1px solid black;
+            margin-top: 5%;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td {
+            height: 50px;
+            vertical-align: bottom;
+        }
+
+        h1 {
+            text-align: center;
+            color: midnightblue;
+        }
+
+        .button {
+            text-align: center;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>CRUD Operation</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="name"></label>
+                Name:<input type="text" name="name" id="txtname">
+                <input type="hidden" name="tblrowindex" id="tblrowindex">
+
+            </div>
+            <div class="form-group">
+                <label for="contact"></label>
+                Contact No:<input type="tel" name="contact" id="txtcontact"><br>
+            </div>
+            <div class="form-group">
+                <label for="email"></label>
+                Email ID:<input type="email" name="email" id="txtemail"><br><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="button">
+
+                <button type="button" id="btnadd" class="btn">ADD</button>
+                <button type="button" id="btnupdate" style="display: none;" class="btn">UPDATE</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <table id="d1" class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Contact No</th>
+                            <th>Email</th>
+                            <th>Action </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <script>
+
+
+        //add data
+        var num = 0;
+        $("#btnadd").click(function () {
+            num = num + 1;
+            var fullname = $("#txtname").val();
+            var phonenumber = $("#txtcontact").val();
+            var emailadd = $("#txtemail").val();
+
+            var edit = "<a class='btnedit' href='#'>Edit</a>";
+            var btndel = "<a class='btndelt' href='#'>delete</a>";
+
+            if (fullname == "" || phonenumber == "" || emailadd == "") {
+                alert("Please fill up all details");
+            }
+            else {
+                var tblrecord = "<tr><td>" + num + "</td><td>" + fullname + "</td><td>" + phonenumber + "</td><td>" + emailadd +
+                    "</td><td><button>" + edit + "</button>&nbsp; &nbsp;<button>" + btndel + "</button></td></tr>";
+                $("#d1").append(tblrecord);
+                setTimeout(function () {
+                    alert("data added successfully.!");
+                }, 300);
+
+            }
+
+
+            $("#txtname").val("");
+            $("#txtcontact").val("");
+            $("#txtemail").val("");
+
+        });
+
+        //fatching data
+        $("#d1").on("click", ".btnedit", function (e) {
+            var tblrow = $(this).closest('tr');
+            var tblcol = $(tblrow).find('td');
+            $("#tblrowindex").val($(tblrow).index());
+            //$("#txtid").val($(tblcol).eq(0).html());
+            $("#txtname").val($(tblcol).eq(1).html());
+            $("#txtcontact").val($(tblcol).eq(2).html());
+            $("#txtemail").val($(tblcol).eq(3).html());
+            $("#btnadd").hide();
+            $("#btnupdate").show();
+
+        });
+
+        //edit data
+        $("#btnupdate").click(function () {
+            // var id = $("#txtid").val();
+            var fullname = $("#txtname").val();
+            var phonenumber = $("#txtcontact").val();
+            var emailadd = $("#txtemail").val();
+
+            // $("#d1 tr").eq($("#tblrowindex").val()).find("td").eq(0).html(id);
+            $("#d1 tr").eq($("#tblrowindex").val()).find("td").eq(1).html(fullname);
+            $("#d1 tr").eq($("#tblrowindex").val()).find("td").eq(2).html(phonenumber);
+            $("#d1 tr").eq($("#tblrowindex").val()).find("td").eq(3).html(emailadd);
+
+            // var id = $("#txtid").val("");
+            $("#txtname").val("");
+            $("#txtcontact").val("");
+            $("#txtemail").val("");
+            $("#btnadd").show();
+            $("#btnupdate").hide();
+            setTimeout(function () {
+                alert("data updated successfully...");
+            }, 300);
+
+        });
+
+        //delete data
+
+        $("#d1").on("click", ".btndelt", function (e) {
+            if (confirm('Are you sure? you want to delete this record')) {
+                $(this).closest('tr').remove();
+            }
+            setTimeout(function () {
+                alert("data deleted successfully...");
+            }, 300);
+        });
+    </script>
+
+</body>
+
+</html>
